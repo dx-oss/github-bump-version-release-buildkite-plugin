@@ -4,11 +4,16 @@ set -euo pipefail
 #env
 #whoami
 
-echo $BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_NAME
+# echo $BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_NAME
 #echo $BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_VER
 
-docker-compose version
-docker version
-docker ps
-whoami
-whereis docker
+# docker-compose version
+# docker version
+# docker ps
+# whoami
+# whereis docker
+# pwd
+
+image="dxdx/docker-builder-dotnet:2.2"
+
+docker run -v $(pwd):/src -w /src --entrypoint dotnet --rm -it $image /gitversion/GitVersion.dll /output json /nofetch /showvariable semVer
