@@ -15,5 +15,6 @@ set -euo pipefail
 # pwd
 
 image="dxdx/docker-builder-dotnet:2.2"
-
-docker run -v $(pwd):/src -w /src --entrypoint dotnet --rm -it $image /gitversion/GitVersion.dll /output json /nofetch /showvariable semVer
+ver=$(docker run -v $(pwd):/src -w /src --entrypoint dotnet --rm -it $image /gitversion/GitVersion.dll /output json /nofetch /showvariable semVer)
+echo $ver
+export BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_VER=$ver
