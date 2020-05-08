@@ -1,5 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
-env
+#env
+#whoami
+
+echo $BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_NAME
+echo $BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_VER
+
+docker-compose version
+docker version
+docker ps
 whoami
+whereis docker

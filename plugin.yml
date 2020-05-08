@@ -5,4 +5,5 @@ requirements: []
 configuration:
   pattern:
     name: string
+    ver: string
   additionalProperties: false
