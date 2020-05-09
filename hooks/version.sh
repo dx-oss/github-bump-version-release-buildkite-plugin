@@ -1,5 +1,6 @@
 #!/bin/bash
-source hooks/common.sh
+
+source $BUILDKITE_BUILD_PATH/hooks/common.sh
 
 version="v0.0.0"
 

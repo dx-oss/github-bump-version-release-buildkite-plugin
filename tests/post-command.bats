@@ -5,7 +5,9 @@ load '/usr/local/lib/bats/load.bash'
 # https://github.com/sstephenson/bats
 
 @test "Fetch version from current git repo with gitversion" {
-  export BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG="1"
+  #export BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG="1"
+  
+  export BUILDKITE_BUILD_PATH=$(pwd)
 
   ver=v1.0.0
   

@@ -1,5 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 
-source hooks/version.sh
-source hooks/release.sh
+source $BUILDKITE_BUILD_PATH/hooks/version.sh
+source $BUILDKITE_BUILD_PATH/hooks/release.sh

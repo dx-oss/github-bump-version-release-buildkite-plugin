@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source hooks/common.sh
+source $BUILDKITE_BUILD_PATH/hooks/common.sh
 
 version=$(buildkite-agent meta-data get version)
 
