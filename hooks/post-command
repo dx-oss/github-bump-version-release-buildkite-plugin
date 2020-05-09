@@ -1,5 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-source $BUILDKITE_BUILD_PATH/hooks/version.sh
-source $BUILDKITE_BUILD_PATH/hooks/release.sh
+if [ -e "./hooks" ]; then
+    source ./hooks/version.sh
+    source ./hooks/release.sh
+else
+    source version.sh
+    source release.sh
+fi
