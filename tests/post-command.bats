@@ -7,8 +7,6 @@ load '/usr/local/lib/bats/load.bash'
 @test "Fetch version from current git repo with gitversion" {
   #export BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG="1"
   
-  export BUILDKITE_BUILD_PATH=$(pwd)
-
   ver=v1.0.0
   
   stub buildkite-agent "annotate : echo $ver"

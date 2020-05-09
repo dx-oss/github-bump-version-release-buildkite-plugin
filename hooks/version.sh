@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source $BUILDKITE_BUILD_PATH/hooks/common.sh
+pwd=$(pwd)
+
+ls -la
+
+source $pwd/hooks/common.sh
 
 version="v0.0.0"
 

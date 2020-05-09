@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source $BUILDKITE_BUILD_PATH/hooks/common.sh
+pwd=$(pwd)
+
+source $pwd/hooks/common.sh
 
 version=$(buildkite-agent meta-data get version)
 
