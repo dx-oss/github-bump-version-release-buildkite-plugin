@@ -22,16 +22,13 @@ fi
 
 docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
 
-pwd=$(pwd)
-ls -la
-
 version="v0.0.0"
 dotnet_args="--rm -it $image /gitversion/GitVersion.dll /output json /nofetch /showvariable semVer"
 version=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet $dotnet_args)
 
 $buildkite_agent meta-data set version $version
-$buildkite_agent annotate --style "Using [$image] with GitVersion and SemVer"
-$buildkite_agent annotate "Bump to version ${version}"
+$buildkite_agent annotate --style info "Using [$image] with GitVersion and SemVer"
+$buildkite_agent annotate --style success "Bump to version ${version}"
 
 export VERSION=$version
 

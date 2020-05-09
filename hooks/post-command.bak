@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ -e "./hooks" ]; then
+    source ./hooks/version.sh
+    source ./hooks/release.sh
+else
+    source version.sh
+    source release.sh
+fi

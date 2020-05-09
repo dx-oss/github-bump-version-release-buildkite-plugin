@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -euo pipefail
-
-pwd
-
-ls -lah
-
-find ./
