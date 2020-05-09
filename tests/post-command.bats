@@ -2,8 +2,21 @@
 
 load '/usr/local/lib/bats/load.bash'
 
-@test "Creates an annotation with the file count" {
-  run "$PWD/hooks/post-command"
+# https://github.com/sstephenson/bats
 
+@test "Fetch version from current git repo with gitversion" {
+  #export BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG="0"
+
+  ver=v1.0.0
+  
+  stub buildkite-agent "annotate : echo $ver"
+  stub docker "run : echo $ver"
+
+  run "$PWD/hooks/post-command"
+  
+  assert_output --partial "$ver"
   assert_success
+
+  unstub docker
+  #unstub buildkite-agent
 }
