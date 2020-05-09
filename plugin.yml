@@ -1,7 +1,7 @@
 name: "github-bump-version-release"
 description: Buildkite plugin that bump version and release it to GitHub
 author: https://github.com/dx-oss
-requirements: ["docker","buildkite-agent"]
+requirements: ["docker","buildkite-agent","github-release"]
 configuration:
   key:
     name: string
@@ -12,10 +12,13 @@ configuration:
   debug:
     name: int
     description: if value is greater then zero the plugin will expose debug information
-  agent:
-    name: string
-    description: buildkite-agent binary
   docker:
     name: string
-    description: docker binary    
+    description: docker binary
+  agent:
+    name: string
+    description: buildkite-agent binary (https://github.com/buildkite/agent)
+  release:
+    name: string
+    description: gitub-release binary (https://github.com/github-release/github-release)
   additionalProperties: false

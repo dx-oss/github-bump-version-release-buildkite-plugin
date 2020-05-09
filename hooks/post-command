@@ -2,3 +2,4 @@
 set -euo pipefail
 
 source hooks/version.sh
+source hooks/release.sh
