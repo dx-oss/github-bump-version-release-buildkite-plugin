@@ -57,9 +57,10 @@ export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut 
 
 # TODO: use https://github.com/github-release/github-release instead when it support default github description behaviour
 release_payload=$(printf '{"tag_name": "%s","name": "%s","draft": false,"prerelease": false}' $version $version)
-release_result=$(curl -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases)
-release_id=$(echo $release_result | jq -r .id)
-release_url=$(echo $release_result | jq -r .url)
-
-$buildkite_agent annotate --style info "Release $release_url"
-$buildkite_agent annotate --style success "Push release ${version} ($release_id)"
+#release_result=$(curl -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases)
+#release_id=$(echo $release_result | jq -r .id)
+#release_url=$(echo $release_result | jq -r .url)
+#$buildkite_agent annotate --style info "Release $release_url"
+#$buildkite_agent annotate --style success "Push release ${version} ($release_id)"
+curl -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
+$buildkite_agent annotate --style success "Push release ${version}"
