@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# https://buildkite.com/docs/pipelines/writing-build-scripts
 set -euo pipefail
 
 # common
