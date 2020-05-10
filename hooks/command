@@ -56,5 +56,5 @@ fi
 export GITHUB_USER=$(echo "git@github.com:dxcn/oxy-dotnet-foundation.git" | cut -d: -f 2 | cut -d/ -f 1)
 export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut -d. -f 1)
 
-$github_release -t "${version}"
+$docker run -v $(pwd):/src -w /src --entrypoint $github_release -t "${version}" -r $GITHUB_REPO -u $GITHUB_USER -s $GITHUB_TOKEN
 $buildkite_agent annotate --style success "Push release ${version}"
