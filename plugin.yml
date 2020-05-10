@@ -12,13 +12,16 @@ configuration:
   debug:
     name: int
     description: if value is greater then zero the plugin will expose debug information
+  dry:
+    name: int
+    description: if value is greater then zero the plugin will not pusht the new release
   docker:
     name: string
     description: docker binary
   agent:
     name: string
     description: buildkite-agent binary (https://github.com/buildkite/agent)
-  release:
-    name: string
-    description: gitub-release binary (https://github.com/github-release/github-release)
+  # release:
+  #   name: string
+  #   description: gitub-release binary (https://github.com/github-release/github-release)
   additionalProperties: false
