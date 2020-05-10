@@ -6,7 +6,7 @@ set -euo pipefail
 # common
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
-github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-github-release}
+github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-/sbin/github-release}
 buildkite_agent=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_AGENT:-buildkite-agent}
 
 image="dxdx/docker-builder-dotnet:2.2"
@@ -16,7 +16,7 @@ debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
 if [ $debug -gt 0 ]; then
     env
     docker version
-    docker ps    
+    docker ps
     whoami
     pwd
 fi
