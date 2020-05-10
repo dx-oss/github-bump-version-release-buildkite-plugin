@@ -12,7 +12,7 @@ load '/usr/local/lib/bats/load.bash'
   stub buildkite-agent "annotate : echo $ver"
   stub docker "run : echo $ver"
 
-  run "$PWD/hooks/post-command"
+  run "$PWD/hooks/command"
   
   assert_output --partial "$ver"
   assert_success
