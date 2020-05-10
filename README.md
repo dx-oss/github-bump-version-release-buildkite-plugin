@@ -11,7 +11,6 @@ steps:
   - command: ls
     plugins:
       dx-oss/github-bump-version-release#v1:
-        name: '*.md'
 ```
 
 ## Configuration
