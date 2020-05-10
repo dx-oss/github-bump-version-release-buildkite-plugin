@@ -62,7 +62,7 @@ dry=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DRY:-0}
 if [ $dry -gt 0 ]; then
     $buildkite_agent annotate --style success "Push release ${version} (dry-run)"
 else
-    export GITHUB_USER=$(echo "git@github.com:dxcn/oxy-dotnet-foundation.git" | cut -d: -f 2 | cut -d/ -f 1)
+    export GITHUB_USER=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 1)
     export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut -d. -f 1)
 
     # TODO: use https://github.com/github-release/github-release instead when it support default github description behaviour
