@@ -12,9 +12,12 @@ configuration:
   debug:
     name: int
     description: if value is greater then zero the plugin will expose debug information
+  pull:
+    name: int
+    description: if value is greater then zero the image would be pull first
   dry:
     name: int
-    description: if value is greater then zero the plugin will not pusht the new release
+    description: if value is greater then zero the plugin will not pusht the new release    
   docker:
     name: string
     description: docker binary

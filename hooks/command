@@ -6,7 +6,7 @@ set -euo pipefail
 # common
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
-github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-/sbin/github-release}
+github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-github-release}
 buildkite_agent=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_AGENT:-buildkite-agent}
 
 image="dxdx/docker-builder-dotnet:2.2"
@@ -22,6 +22,11 @@ if [ $debug -gt 0 ]; then
 fi
 
 docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
+
+pull=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PULL:-0}
+if [ $pull -gt 0 ]; then
+    $docker pull $image
+fi
 
 # version
 
@@ -53,8 +58,13 @@ if [ "$GITHUB_TOKEN" = "" ]; then
     exit 1
 fi
 
-export GITHUB_USER=$(echo "git@github.com:dxcn/oxy-dotnet-foundation.git" | cut -d: -f 2 | cut -d/ -f 1)
-export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut -d. -f 1)
+dry=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DRY:-0}
+if [ $dry -gt 0 ]; then
+    $buildkite_agent annotate --style success "Push release ${version} (dry-run)"
+else
+    export GITHUB_USER=$(echo "git@github.com:dxcn/oxy-dotnet-foundation.git" | cut -d: -f 2 | cut -d/ -f 1)
+    export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut -d. -f 1)
 
-$docker run -e "GITHUB_USER=$GITHUB_USER" -e "GITHUB_REPO=$GITHUB_REPO" -e "GITHUB_TOKEN=$GITHUB_TOKEN" -v $(pwd):/src -w /src --entrypoint $github_release --rm -it $image release -t "$version"
-$buildkite_agent annotate --style success "Push release ${version}"
+    $docker run -e "GITHUB_USER=$GITHUB_USER" -e "GITHUB_REPO=$GITHUB_REPO" -e "GITHUB_TOKEN=$GITHUB_TOKEN" -v $(pwd):/src -w /src --entrypoint $github_release --rm -it $image release -t "$version"
+    $buildkite_agent annotate --style success "Push release ${version}"
+fi
