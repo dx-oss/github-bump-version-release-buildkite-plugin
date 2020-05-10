@@ -6,7 +6,7 @@ set -euo pipefail
 # common
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
-#github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-github-release}
+github_release=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_RELEASE:-github-release}
 buildkite_agent=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_AGENT:-buildkite-agent}
 
 image="dxdx/docker-builder-dotnet:2.2"
@@ -56,10 +56,5 @@ fi
 export GITHUB_USER=$(echo "git@github.com:dxcn/oxy-dotnet-foundation.git" | cut -d: -f 2 | cut -d/ -f 1)
 export GITHUB_REPO=$(echo "$BUILDKITE_REPO" | cut -d: -f 2 | cut -d/ -f 2 | cut -d. -f 1)
 
-# TODO: use https://github.com/github-release/github-release instead when it support default github description behaviour
-echo '{"tag_name": "VERSION","name": "VERSION","draft": false,"prerelease": false}' > payload.json
-sed -s "s/VERSION/${version}/gi" -i payload.json
-cat payload.json
-curl -f -q -H "Authorization: token ${GITHUB_TOKEN}" --data @payload.json https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases
-rm payload.json
+$github_release -t "${version}"
 $buildkite_agent annotate --style success "Push release ${version}"

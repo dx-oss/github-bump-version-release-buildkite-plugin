@@ -21,7 +21,7 @@ configuration:
   agent:
     name: string
     description: buildkite-agent binary (https://github.com/buildkite/agent)
-  # release:
-  #   name: string
-  #   description: gitub-release binary (https://github.com/github-release/github-release)
+  release:
+    name: string
+    description: gitub-release binary (https://github.com/github-release/github-release)
   additionalProperties: false
