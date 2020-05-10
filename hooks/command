@@ -63,5 +63,6 @@ release_payload=$(printf '{"tag_name": "%s","name": "%s","draft": false,"prerele
 #release_url=$(echo $release_result | jq -r .url)
 #$buildkite_agent annotate --style info "Release $release_url"
 #$buildkite_agent annotate --style success "Push release ${version} ($release_id)"
-curl -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
+echo $release_payload
+curl -f -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
 $buildkite_agent annotate --style success "Push release ${version}"
