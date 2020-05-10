@@ -32,7 +32,7 @@ fi
 
 version="v0.0.0"
 dotnet_args="--rm -it $image /gitversion/GitVersion.dll /output json /nofetch /showvariable semVer"
-version=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet $dotnet_args)
+version=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet $dotnet_args | sed 's/[^a-zA-Z0-9\.\-\_]//g')
 
 if [ "$version" = "" ]; then
     $buildkite_agent annotate --style error "Cannot get any version"
