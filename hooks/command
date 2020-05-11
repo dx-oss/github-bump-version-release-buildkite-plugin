@@ -50,6 +50,7 @@ function fetch_version() {
 # version - get version or bump
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${version_as_numbers}"
+git fetch -t
 c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
