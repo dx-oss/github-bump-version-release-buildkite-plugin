@@ -55,12 +55,8 @@ c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "${prefix}${version}" | wc -l || true)
     if [ $version_diff -gt 0 ]; then
-        $buildkite_agent annotate --style info "Version ${version} allready exists as tag, so it will be bumped"
-        ma=$(echo ${version_as_numbers} | cut -f1 -d".")
-        mi=$(echo ${version_as_numbers} | cut -f2 -d".")
-        mp=$(echo ${version_as_numbers} | cut -f3 -d".")
-        mp=$((mp + 1))
-        version="${ma}.${mi}.${mp}"
+        $buildkite_agent annotate --style info "Version ${version} allready exists as tag"
+        version=$(docker run --entrypoint semver ${image} bump patch ${version})
     else
         $buildkite_agent annotate --style info "Version ${version} allready exists (skip push)"
         exit 0
