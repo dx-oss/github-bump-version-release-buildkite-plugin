@@ -65,6 +65,8 @@ if [ $c -gt 0 ]; then
     fi
 else
     version=$(fetch_version SemVer)
+    echo $version
+    exit
 fi
 
 if [ "$version" = "" ]; then
