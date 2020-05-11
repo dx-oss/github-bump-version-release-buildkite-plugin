@@ -76,7 +76,7 @@ fi
 if [ "$prefix" != "" ]; then
     prefix_check=$(echo "${version}" | grep -c $prefix || true)
     if [ $prefix_check -eq 0 ]; then
-        version="${prefix}${$version}"
+        version="${prefix}${version}"
     fi
 fi
 
