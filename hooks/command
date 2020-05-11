@@ -48,9 +48,8 @@ function fetch_version() {
 
 # version - get version or bump
 version_as_numbers=$(fetch_version MajorMinorPatch)
-git tag > /tmp/tags.txt
 version="${prefix}${version_as_numbers}"
-c=$(grep -c "^${version}" /tmp/tags.txt)
+c=$(git tag | grep -c "^${version}")
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
     if [ $version_diff -gt 0 ]; then
