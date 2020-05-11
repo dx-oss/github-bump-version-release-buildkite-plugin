@@ -58,7 +58,7 @@ version="${prefix}${version_as_numbers}"
 c=$(grep -c "^${version}" /tmp/tags.txt)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
-    if $version_diff -gt 0 ]; then
+    if [ $version_diff -gt 0 ]; then
         $buildkite_agent annotate --style info "Version ${version} allready exists as tag, so it will be bumped"
         ma=$(echo ${version_as_numbers} | cut -f1 -d".")
         mi=$(echo ${version_as_numbers} | cut -f2 -d".")
