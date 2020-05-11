@@ -49,7 +49,7 @@ function fetch_version() {
 # version - get version or bump
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${prefix}${version_as_numbers}"
-c=$(git tag | grep -c "^${version}")
+c=$(git tag | grep -c "^${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
     if [ $version_diff -gt 0 ]; then
@@ -74,7 +74,7 @@ if [ "$version" = "" ]; then
 fi
 
 if [ "$prefix" != "" ]; then
-    prefix_check=$(echo "${version}" | grep -c $prefix)
+    prefix_check=$(echo "${version}" | grep -c $prefix || true)
     if [ $prefix_check -eq 0 ]; then
         version="${prefix}${$version}"
     fi
