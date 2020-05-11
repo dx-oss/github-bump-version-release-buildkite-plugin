@@ -45,8 +45,8 @@ function fetch_version() {
 # version - get version or bump
 function get_version() {
     local v=$(fetch_version MajorMinorPatch)
-    git tag > tags.txt
-    local c=$(grep -c "^${v}" tags.txt)
+    git tag > /tmp/tags.txt
+    local c=$(grep -c "^${v}" /tmp/tags.txt)
     if [ $c -gt 0 ]; then
         $buildkite_agent annotate --style info "Version ${v} allready exists as tag, so it will be bumped"
         ma=$(echo $v | cut -f1 -d".")
