@@ -58,15 +58,13 @@ if [ $c -gt 0 ]; then
         mi=$(echo ${version_as_numbers} | cut -f2 -d".")
         mp=$(echo ${version_as_numbers} | cut -f3 -d".")
         mp=$((mp + 1))
-        version="${prefix}${ma}.${mi}.${mp}"
+        version="${ma}.${mi}.${mp}"
     else
         $buildkite_agent annotate --style info "Version ${version} allready exists (skip push)"
         exit 0
     fi
 else
     version=$(fetch_version SemVer)
-    echo $version
-    exit
 fi
 
 if [ "$version" = "" ]; then
@@ -76,7 +74,7 @@ if [ "$version" = "" ]; then
 fi
 
 if [ "$prefix" != "" ]; then
-    prefix_check=$(echo "${version}" | grep -c $prefix || true)
+    prefix_check=$(echo "${version}" | grep -c "^${prefix}" || true)
     if [ $prefix_check -eq 0 ]; then
         version="${prefix}${version}"
     fi
