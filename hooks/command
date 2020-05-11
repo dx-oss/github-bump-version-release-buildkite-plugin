@@ -34,9 +34,10 @@ if [ $pull -gt 0 ]; then
 fi
 prefix=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PREFIX:-""}
 
+$buildkite_agent annotate --style info "Checkout ${branch}"
 git checkout $branch
-sha=$(git rev-parse --short $branch)
-$buildkite_agent annotate --style info "Checkout ${branch} (${sha})"
+# sha=$(git rev-parse --short $branch)
+# $buildkite_agent annotate --style info "Checkout ${branch} (${sha})"
 
 #
 # version
