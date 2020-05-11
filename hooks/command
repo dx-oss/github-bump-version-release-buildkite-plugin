@@ -52,21 +52,22 @@ function fetch_version() {
 }
 
 # version - get version or bump
-version=$(fetch_version MajorMinorPatch)
+version_as_numbers=$(fetch_version MajorMinorPatch)
 git tag > /tmp/tags.txt
+version="${prefix}${$version_as_numbers}"
 c=$(grep -c "^${version}" /tmp/tags.txt)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
     if $version_diff -gt 0 ]; then
-        $buildkite_agent annotate --style info "Version ${version} allready exists (${sha} (skip push)"
-        exit 0
-    else
         $buildkite_agent annotate --style info "Version ${version} allready exists as tag, so it will be bumped"
-        ma=$(echo $version | cut -f1 -d".")
-        mi=$(echo $version | cut -f2 -d".")
-        mp=$(echo $version | cut -f3 -d".")
+        ma=$(echo $version_as_numbers | cut -f1 -d".")
+        mi=$(echo $version_as_numbers | cut -f2 -d".")
+        mp=$(echo $version_as_numbers | cut -f3 -d".")
         mp=$((mp + 1))
-        version=$ma"."$mi"."$mp    
+        version="${prefix}${ma}.${mi}.${mp}"
+    else
+        $buildkite_agent annotate --style info "Version ${version} allready exists (skip push)"
+        exit 0
     fi
 else
     version=$(fetch_version SemVer)
@@ -78,7 +79,13 @@ if [ "$version" = "" ]; then
     exit 1
 fi
 
-version="$prefix$version"
+if [ "$prefix" != "" ]; then
+    prefix_check=$(echo "${version}" | grep -c $prefix)
+    if [ $prefix_check -eq 0 ]; then
+        version="${prefix}${$version}"
+    fi
+fi
+
 #git tag $version
 export VERSION=$version
 echo $version
