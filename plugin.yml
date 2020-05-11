@@ -3,6 +3,12 @@ description: Buildkite plugin that bump version and release it to GitHub
 author: https://github.com/dx-oss
 requirements: ["docker","buildkite-agent","github-release"]
 configuration:
+  branch:
+    name: string
+    description: Which branch to use (BUILDKITE_PIPELINE_DEFAULT_BRANCH/master)
+  prefix:
+    name: string
+    description: Use of prefix for the version
   key:
     name: string
     description: Fetch another key from SemVer from GitVersion
