@@ -16,7 +16,8 @@ if [ $debug -gt 0 ]; then
     $docker version
     $docker ps
     whoami
-    pwd    
+    pwd
+    git tag   
 fi
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
@@ -48,8 +49,8 @@ function fetch_version() {
 
 # version - get version or bump
 version_as_numbers=$(fetch_version MajorMinorPatch)
-version="${prefix}${version_as_numbers}"
-c=$(git tag | grep -c "^${version}" || true)
+version="${version_as_numbers}"
+c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "$version" | wc -l)
     if [ $version_diff -gt 0 ]; then
