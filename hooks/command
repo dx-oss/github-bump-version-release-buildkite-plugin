@@ -56,7 +56,7 @@ if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "${prefix}${version}" | wc -l || true)
     if [ $version_diff -gt 0 ]; then
         $buildkite_agent annotate --style info "Version ${version} allready exists as tag"
-        version=$(docker run --entrypoint semver ${image} bump patch ${version})
+        version=$(docker run ${image} semver bump patch ${version})
     else
         $buildkite_agent annotate --style info "Version ${version} allready exists (skip push)"
         exit 0
