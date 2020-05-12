@@ -49,9 +49,14 @@ function fetch_version() {
     if [ $exitcode -gt 0 ]; then
         $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
         exit $exitcode
-    fi
+    fi 
     # validate
     $docker run -v $(pwd):/src -w /src --entrypoint semver --rm -it ${image} get release "${v}"
+    exitcode=$?
+    if [ $exitcode -gt 0 ]; then
+        $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
+        exit $exitcode
+    fi    
     echo $v
 }
 
