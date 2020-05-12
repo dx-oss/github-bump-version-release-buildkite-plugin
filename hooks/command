@@ -14,10 +14,11 @@ if [ $debug -gt 0 ]; then
 
     env
     $docker version
-    $docker ps
+    $docker ps    
+    git tag
     whoami
     pwd
-    git tag   
+    ls -la       
 fi
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
@@ -44,7 +45,7 @@ function fetch_version() {
     local variable=$1
     local dotnet_args="--rm -it ${image} /gitversion/GitVersion.dll /output json /nofetch /showvariable ${variable}"
     local v=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet ${dotnet_args})
-    local vv=$($docker run -v $(pwd):/src -w /src --entrypoint semver get release ${v})
+    local validate=$($docker run -v $(pwd):/src -w /src --entrypoint semver --rm -it ${image} get release ${v})
     exitcode=$?
     if [ $exitcode -gt 0 ]; then
         $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
