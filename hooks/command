@@ -7,18 +7,27 @@ set -euo pipefail
 # common
 #
 
-docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
 debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
+
+function run () {
+    if [ $debug -gt 0 ]; then
+        echo "$*"
+    fi
+    eval $*
+}
+
+docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
 if [ $debug -gt 0 ]; then
     set -euox pipefail
-
-    env
     $docker version
     $docker ps    
     git tag
     whoami
     pwd
     ls -la       
+fi
+if [ $debug -gt 1 ]; then    
+    env
 fi
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
@@ -32,7 +41,7 @@ branch=${BUILDKITE_PIPELINE_DEFAULT_BRANCH:-$branch}
 
 pull=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PULL:-0}
 if [ $pull -gt 0 ]; then
-    $docker pull $image
+    run $docker pull $image
 fi
 prefix=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PREFIX:-""}
 
@@ -51,7 +60,7 @@ function fetch_version() {
         exit $exitcode
     fi 
     # validate
-    $docker run -v $(pwd):/src -w /src --entrypoint semver --rm -it ${image} get release "${v}"
+    run $docker run -v $(pwd):/src -w /src --entrypoint semver --rm -it ${image} get release "${v}"
     exitcode=$?
     if [ $exitcode -gt 0 ]; then
         $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
@@ -63,7 +72,8 @@ function fetch_version() {
 # version - get version or bump
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${version_as_numbers}"
-git fetch -t
+run git checkout $branch
+run git fetch -t
 c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "${prefix}${version}" | wc -l || true)
