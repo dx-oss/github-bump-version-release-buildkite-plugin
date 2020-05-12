@@ -8,4 +8,4 @@ echo "clone $BUILDKITE_REPO"
 git clone $BUILDKITE_REPO
 cd $pwd
 git checkout $branch
-echo "Checkout $branch
+echo "Checkout $branch"
