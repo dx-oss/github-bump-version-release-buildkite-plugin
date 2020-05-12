@@ -3,3 +3,4 @@ pwd=$(pwd)
 cd ..
 rm -rf $pwd
 git clone $BUILDKITE_REPO
+cd $pwd
