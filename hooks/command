@@ -46,7 +46,7 @@ prefix=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PREFIX:-""}
 function fetch_version() {
     local variable=$1
     local dotnet_args="--rm -it ${image} /gitversion/GitVersion.dll /output json /nofetch /showvariable ${variable}"
-    local v=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet ${dotnet_args} | tr -dc '[:print:]')    
+    local v=$($docker run -v $(pwd):/src -w /src --entrypoint dotnet ${dotnet_args} | cut -d"\\" -f1')    
     exitcode=$?
     if [ $exitcode -gt 0 ]; then
         $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
