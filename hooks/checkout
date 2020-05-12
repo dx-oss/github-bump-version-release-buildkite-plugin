@@ -1,2 +1,5 @@
-pwd
-env
+#!/bin/bash
+pwd=$(pwd)
+cd ..
+rm -rf $pwd
+git clone $BUILDKITE_REPO
