@@ -60,12 +60,11 @@ function fetch_version() {
         $buildkite_agent annotate --style error "The GitVersion gives exit code ${exitcode}"
         exit $exitcode
     fi    
-    echo $v
+    version=$v
 }
 
 # version - get version or bump
-version_as_numbers=$(fetch_version MajorMinorPatch)
-version="${version_as_numbers}"
+fetch_version MajorMinorPatch
 git fetch -t
 c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
@@ -78,7 +77,7 @@ if [ $c -gt 0 ]; then
         exit 0
     fi
 else
-    version=$(fetch_version SemVer)
+    fetch_version SemVer
 fi
 
 if [ "$version" = "" ]; then
