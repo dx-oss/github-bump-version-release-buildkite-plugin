@@ -69,9 +69,9 @@ function fetch_version() {
 }
 
 # version - get version or bump
+run git checkout -f $branch
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${version_as_numbers}"
-run git checkout $branch
 run git fetch -t
 c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
