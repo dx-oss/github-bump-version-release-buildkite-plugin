@@ -1,11 +1,18 @@
 #!/bin/bash
+
 branch=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_BRANCH:-master}
 branch=${BUILDKITE_PIPELINE_DEFAULT_BRANCH:-$branch}
+
+env
+
 pwd=$(pwd)
 cd ..
 rm -rf $pwd
+
 echo "clone $BUILDKITE_REPO"
 git clone $BUILDKITE_REPO
 cd $pwd
+
+
 git checkout $branch
 echo "Checkout $branch"
