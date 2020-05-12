@@ -9,11 +9,6 @@ set -euo pipefail
 
 debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
 
-function run () {
-    echo "$*"
-    eval $*
-}
-
 docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
 if [ $debug -gt 0 ]; then
     set -euox pipefail
@@ -39,7 +34,7 @@ branch=${BUILDKITE_PIPELINE_DEFAULT_BRANCH:-$branch}
 
 pull=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PULL:-0}
 if [ $pull -gt 0 ]; then
-    run $docker pull $image
+    $docker pull $image
 fi
 prefix=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_PREFIX:-""}
 
@@ -69,10 +64,10 @@ function fetch_version() {
 }
 
 # version - get version or bump
-run git checkout -f $branch
+git checkout -f $branch
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${version_as_numbers}"
-run git fetch -t
+git fetch -t
 c=$(git tag | grep -c "${version}" || true)
 if [ $c -gt 0 ]; then
     version_diff=$(git diff --stat $branch "${prefix}${version}" | wc -l || true)
