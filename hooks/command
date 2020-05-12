@@ -10,9 +10,7 @@ set -euo pipefail
 debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
 
 function run () {
-    if [ $debug -gt 0 ]; then
-        echo "$*"
-    fi
+    echo "$*"
     eval $*
 }
 
