@@ -64,7 +64,7 @@ function fetch_version() {
 }
 
 # version - get version or bump
-git checkout -f $branch
+#git checkout -f $branch
 version_as_numbers=$(fetch_version MajorMinorPatch)
 version="${version_as_numbers}"
 git fetch -t
