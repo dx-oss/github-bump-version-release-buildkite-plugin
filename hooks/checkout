@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh-keyscan -H github.com ~/.ssh/known_hosts
+ssh-keyscan github.com > ~/.ssh/known_hosts
 
 branch=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_BRANCH:-master}
 branch=${BUILDKITE_PIPELINE_DEFAULT_BRANCH:-$branch}
