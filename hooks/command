@@ -122,7 +122,7 @@ else
     # TODO: use https://github.com/github-release/github-release instead when it support default github description behaviour
     # $docker run -e "GITHUB_USER=$GITHUB_USER" -e "GITHUB_REPO=$GITHUB_REPO" -e "GITHUB_TOKEN=$GITHUB_TOKEN" -v $(pwd):/src -w /src --entrypoint $github_release --rm -it $image release -t "${version}"
 
-    release_payload=$(printf '{"tag_name": "%s","name": "%s","draft": false,"prerelease": false}' $version $version)
+    release_payload=$(printf '{"tag_name": "%s","name": "%s","draft": false,"prerelease": false, "target_commitish": "%s"}' $version $version $branch)
     curl -f -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
     
     $buildkite_agent annotate --style success "Push release ${version}"
