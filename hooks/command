@@ -8,6 +8,9 @@ set -euo pipefail
 #
 
 debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
+if [ $debug -gt 1 ]; then    
+    env
+fi
 
 docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
 if [ $debug -gt 0 ]; then
@@ -18,9 +21,6 @@ if [ $debug -gt 0 ]; then
     whoami
     pwd
     ls -la       
-fi
-if [ $debug -gt 1 ]; then    
-    env
 fi
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
