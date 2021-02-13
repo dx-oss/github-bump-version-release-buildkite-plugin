@@ -8,8 +8,12 @@ set -euo pipefail
 #
 
 debug=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DEBUG:-0}
-if [ $debug -gt 1 ]; then    
+if [ $debug -gt 2 ]; then    
     env
+fi
+
+if [ $debug -gt 1 ]; then    
+    whoami
 fi
 
 docker=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOCKER:-docker}
@@ -18,9 +22,8 @@ if [ $debug -gt 0 ]; then
     $docker version
     $docker ps    
     git tag
-    whoami
     pwd
-    ls -la       
+    ls -la      
 fi
 
 dotnet=${BUILDKITE_PLUGIN_GITHUB_BUMP_VERSION_RELEASE_DOTNET:-dotnet}
@@ -122,8 +125,14 @@ else
     # TODO: use https://github.com/github-release/github-release instead when it support default github description behaviour
     # $docker run -e "GITHUB_USER=$GITHUB_USER" -e "GITHUB_REPO=$GITHUB_REPO" -e "GITHUB_TOKEN=$GITHUB_TOKEN" -v $(pwd):/src -w /src --entrypoint $github_release --rm -it $image release -t "${version}"
 
+    url=https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
     release_payload=$(printf '{"tag_name": "%s","name": "%s","draft": false,"prerelease": false, "target_commitish": "%s"}' $version $version $branch)
-    curl -f -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO/releases
+
+    echo "github-release"
+    echo "POST $url"
+    echo "$release_payload"
+    
+    curl -f -q -H "Authorization: token $GITHUB_TOKEN" --data "$release_payload" $url
     
     $buildkite_agent annotate --style success "Push release ${version}"
 fi
